@@ -99,6 +99,23 @@ return [
             'sslmode' => env('DB_SSLMODE', 'prefer'),
         ],
 
+        'ally_dev' => [
+            'driver' => 'sqlsrv',
+            'host' => 'H-L-MITS-AMHCAN\SQLEXPRESS',
+            'port' => '1433',
+            'database' => 'Laravel_React',
+            'username' => 'sa',
+            'password' => 'AllyServer@2k26!',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'encrypt' => 'yes',
+			'trust_server_certificate' => true,
+				'options' => [PDO::ATTR_STRINGIFY_FETCHES => false,]
+            //'prefix_indexes' => true,
+            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
+            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),
