@@ -1,33 +1,18 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-
-// Step 1: Define the API response type
-interface User {
-  id: number;
-  name: string;
-}
+import { useState } from "react";
+import Register from "./components/Register";
+import Login from "./components/Login";
 
 function App() {
-  // Step 2: Pass the type generic to useState
-  const [users, setUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/users")
-      .then((response) => response.json())
-      .then((data: User[]) => setUsers(data));
-  }, []);
+  const [currentView, setCurrentView] = useState<"signup" | "login">("signup");
 
   return (
-    <>
-      <div>
-        <h1>Users List - Ally</h1>
-        <ul>
-          {users.map((user) => (
-            <li key={user.id}>{user.name}</li>
-          ))}
-        </ul>
-      </div>
-    </>
+    <main className="min-h-screen bg-slate-100">
+      {currentView === "signup" ? (
+        <Register onSwitchToLogin={() => setCurrentView("login")} />
+      ) : (
+        <Login onSwitchToSignup={() => setCurrentView("signup")} />
+      )}
+    </main>
   );
 }
 
