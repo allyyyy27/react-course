@@ -66,3 +66,28 @@ export const loginUser = async (formData: UserLoginFormData): Promise<ApiRespons
 
     return data;
 };
+
+
+
+
+export const checkBackendPing = async () => {
+  try {
+    const response = await fetch(`${APP_CONFIG.API_BASE_URL}/ping`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Failed to connect to backend:', error);
+    throw error;
+  }
+};
