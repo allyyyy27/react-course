@@ -1,4 +1,5 @@
 export interface UserRegistrationFormData{
+    pinMode: number;
     firstName: string;
     middleName: string;
     lastName: string;

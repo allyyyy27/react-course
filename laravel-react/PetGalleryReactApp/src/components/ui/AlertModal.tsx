@@ -1,13 +1,61 @@
 import React from "react";
+import SuccessSvg from "../../assets/svg/success.svg";
+import SendSvg from "../../assets/svg/send.svg";
+import WarningSvg from "../../assets/svg/warning.svg";
+import FailedSvg from "../../assets/svg/failed.svg";
+import ProcessingSvg from "../../assets/svg/processing.svg";
 
 interface AlertModalProps {
   isOpen: boolean;
-  type: "success" | "error";
+  type: "success" | "error" | "sent" | "warning" | "processing";
   title?: string;
   message: string;
   buttonText?: string;
   onConfirm: () => void;
 }
+
+const typeConfig = {
+  success: {
+    titleText: "text-[#00bf15]",
+    defaultTitle: "SUCCESS",
+    svgAsset: SuccessSvg,
+    btnBorder: "border-[#00bf15]",
+    btnTxtColor: "text-[#00bf15]",
+    defaultBtnText: "Continue",
+  },
+  error: {
+    titleText: "text-[#ef2525]",
+    defaultTitle: "OOPS !",
+    svgAsset: FailedSvg,
+    btnBorder: "border-[#ef2525]",
+    btnTxtColor: "text-[#ef2525]",
+    defaultBtnText: "Try Again",
+  },
+  warning: {
+    titleText: "text-[#ff862f]",
+    defaultTitle: "WARNING",
+    svgAsset: WarningSvg,
+    btnBorder: "border-[#ff862f]",
+    btnTxtColor: "text-[#ff862f]",
+    defaultBtnText: "Go Back",
+  },
+  sent: {
+    titleText: "text-[#4286df]",
+    defaultTitle: "SENT",
+    svgAsset: SendSvg,
+    btnBorder: "border-[#4286df]",
+    btnTxtColor: "text-[#4286df]",
+    defaultBtnText: "OK",
+  },
+  processing: {
+    titleText: "text-[#f1ca24]",
+    defaultTitle: "PROCESSING",
+    svgAsset: ProcessingSvg,
+    btnBorder: "border-[#f1ca24]",
+    btnTxtColor: "text-[#f1ca24]",
+    defaultBtnText: "Go Back",
+  },
+};
 
 export const AlertModal: React.FC<AlertModalProps> = ({
   isOpen,
@@ -19,67 +67,57 @@ export const AlertModal: React.FC<AlertModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  const isSuccess = type === "success";
+  const currentTheme = typeConfig[type] || typeConfig.success;
+  const {
+    titleText,
+    defaultTitle,
+    svgAsset,
+    btnBorder,
+    btnTxtColor,
+    defaultBtnText,
+  } = currentTheme;
+
+  //const isSuccess = type === "success";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-2xl p-6 text-center flex flex-col items-center animate-in fade-in zoom-in duration-200">
-        {/* Icon */}
-        <div
-          className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${
-            isSuccess
-              ? "bg-blue-50 text-blue-500 border-2 border-blue-500"
-              : "bg-red-50 text-red-500 border-2 border-red-500"
-          }`}
-        >
-          {isSuccess ? (
-            <svg
-              className="w-8 h-8 stroke-current fill-none stroke-[2.5]"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          ) : (
-            <svg
-              className="w-8 h-8 stroke-current fill-none stroke-[2.5]"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          )}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+      {/* Modal Container */}
+      <div className="relative w-full max-w-[340px] bg-white rounded-[32px] shadow-2xl overflow-hidden text-center flex flex-col items-center pb-6 animate-in fade-in zoom-in duration-200">
+        {/* FIXED: Removed fixed height wrapper completely. Let the SVG scale down naturally */}
+        <div className="w-full relative select-none">
+          <img
+            src={svgAsset}
+            alt={`${type} header`}
+            className="w-full h-auto block"
+          />
         </div>
 
-        {/* Title */}
-        <h3
-          className={`text-2xl font-bold mb-2 ${isSuccess ? "text-blue-600" : "text-red-600"}`}
-        >
-          {title || (isSuccess ? "Success!" : "Oooops!")}
-        </h3>
+        {/* Content Section with Tight Padding */}
+        <div className="w-full px-6 flex flex-col items-center mt-3">
+          {/* Main Title Heading - Matches your font style precisely */}
+          <h3
+            className={`text-4xl font-extrabold font-cooper-black tracking-wide uppercase mb-6 ${titleText}`}
+          >
+            {title || defaultTitle}
+          </h3>
 
-        {/* Message */}
-        <p className="text-slate-500 text-sm mb-6 max-w-[240px] leading-relaxed">
-          {message}
-        </p>
+          {/* User Message Text */}
+          <p className="text-black font-normal font-poppins-reg text-sm mb-6 max-w-[240px] leading-relaxed">
+            {message}
+          </p>
 
-        {/* Action Button */}
-        <button
-          onClick={onConfirm}
-          className={`w-full py-2.5 px-4 rounded-lg text-white font-semibold shadow-md transition duration-150 active:scale-95 ${
-            isSuccess
-              ? "bg-blue-600 hover:bg-blue-700"
-              : "bg-red-600 hover:bg-red-700"
-          }`}
-        >
-          {buttonText || (isSuccess ? "Continue" : "Try Again")}
-        </button>
+          {/* Action Confirmation Button */}
+          <button
+            onClick={onConfirm}
+            className={`w-auto min-w-[110px] py-1.5 px-5 rounded-full border-2 
+            text-sm font-poppins-reg font-bold tracking-wide whitespace-nowrap
+            transition duration-150 active:scale-95 bg-white 
+            hover:bg-stone-50 active:bg-stone-100 cursor-pointer
+            ${btnBorder} ${btnTxtColor}`}
+          >
+            {buttonText || defaultBtnText}
+          </button>
+        </div>
       </div>
     </div>
   );

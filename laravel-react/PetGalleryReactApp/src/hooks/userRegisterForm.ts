@@ -11,6 +11,7 @@ const initialFormState: UserRegistrationFormData = {
   userName: '',
   password: '',
   pinCode: '',
+  pinMode: 1
 };
 
 export const userRegisterForm = (onRegistrationSuccess?: () => void) => {

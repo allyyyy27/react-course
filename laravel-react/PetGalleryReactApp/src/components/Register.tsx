@@ -17,6 +17,13 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
     closeModal,
   } = userRegisterForm(onSwitchToLogin);
 
+  const getModalButtonText = () => {
+    if (modalState.type === "success") return "Proceed to Login";
+    if (modalState.type === "error" || modalState.type === "warning")
+      return "Try Again";
+    return undefined;
+  };
+
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg border border-slate-200 p-6 sm:p-8">
@@ -27,8 +34,8 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
           Enter your credentials to create an account
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name Section */}
+        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
+          {}
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
             <div className="sm:col-span-4">
               <InputField
@@ -143,6 +150,7 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
           isOpen={modalState.isOpen}
           type={modalState.type}
           message={modalState.message}
+          buttonText={getModalButtonText()}
           onConfirm={closeModal}
         />
       </div>

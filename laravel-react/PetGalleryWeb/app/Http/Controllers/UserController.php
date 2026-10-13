@@ -16,7 +16,7 @@ class UserController extends Controller{
     public function userRegistration(Request $request)
     {
         try {
-            // Fix typo: firsName -> firstName
+            $pintMode    = 1;
             $firstName   = $request->firstName;
             $middleName  = $request->middleName;
             $lastName    = $request->lastName;
@@ -27,6 +27,7 @@ class UserController extends Controller{
             $pinCode     = (int) $request->pinCode;
 
             $parameters = [
+                $pintMode,
                 $firstName,
                 $middleName,
                 $lastName,
@@ -42,7 +43,7 @@ class UserController extends Controller{
                 DECLARE @pintErrNum SMALLINT
                 DECLARE @pstrErrMsg VARCHAR(200)
                 DECLARE @NewUserRecID BIGINT
-                EXEC spUserCredentials ?,?,?,?,?,?,?,?, @pintErrNum OUTPUT, @pstrErrMsg OUTPUT, @NewUserRecID OUTPUT
+                EXEC spUserCredentials ?,?,?,?,?,?,?,?,?, @pintErrNum OUTPUT, @pstrErrMsg OUTPUT, @NewUserRecID OUTPUT
                 SELECT @pintErrNum AS ErrorNumber, @pstrErrMsg AS ErrorMessage
             ', $parameters);
 
